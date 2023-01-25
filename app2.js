@@ -3,7 +3,7 @@ const readline = require('readline');
 const {google} = require('googleapis');
 
 // service account key file from Google Cloud console.
-const KEYFILEPATH = 'C:\\Users\\SmartCom\\Desktop\\key.json';
+const KEYFILEPATH = 'C:\\Users\\SmartCom\\Desktop\\key2.json';
 
 // Request full drive access.
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
@@ -20,7 +20,7 @@ async function createAndUploadFile(auth){
 
     let fileMetadata = {
         'name': 'hassan2.jpg',
-        'parents':  ['1iQ0NAYlyx2TVOKEkF7aFMH1CoQ7CO_Jg']
+        'parents':  ['15jMGzpWRGkYtV1mitmM6AcUhuB-xWS0J']
     };
 
     let media = {
@@ -45,7 +45,7 @@ async function createAndUploadFile(auth){
     }
 }
 
-//createAndUploadFile(auth).catch(console.error);
+createAndUploadFile(auth).catch(console.error);
 
 async function generatePublicUrl(auth) {
     const driveService = google.drive({version: 'v3', auth});
@@ -120,4 +120,4 @@ async function generatePublicUrl(auth) {
       }
     );
   }
-  DlImgFromFolder(auth,'1iQ0NAYlyx2TVOKEkF7aFMH1CoQ7CO_Jg')
+  //DlImgFromFolder(auth,'1iQ0NAYlyx2TVOKEkF7aFMH1CoQ7CO_Jg')
