@@ -45,30 +45,53 @@ async function createAndUploadFile(auth){
     }
 }
 
-createAndUploadFile(auth).catch(console.error);
+//createAndUploadFile(auth).catch(console.error);
 
 async function generatePublicUrl(auth) {
     const driveService = google.drive({version: 'v3', auth});
     try {
-      const fileId = '1_XjR5RZcWTGluPNYTeLFlR7Bgc4FIt-u';
+      const fileId = '15jMGzpWRGkYtV1mitmM6AcUhuB-xWS0J';
       await driveService.permissions.create({
         fileId: fileId,
         requestBody: {
           role: 'reader',
-          type: 'anyone',
+          type: 'anyone'
         },
+        
       });
-  
-      const result = await driveService.files.get({
+      const result = await driveService.files.list({
         fileId: fileId,
-        fields: 'webViewLink, webContentLink',
+          trashed: false,
+        //fields: 'webViewLink, webContentLink'
       });
       console.log(result.data);
     } catch (error) {
       console.log(error.message);
     }
   }
- // generatePublicUrl(auth)
+  generatePublicUrl(auth)
+async function deletefile(auth) {
+    const driveService = google.drive({version: 'v3', auth});
+    try {
+      const fileId = '1-WUQCVeeyfR_GdJcvereVjisFE3f0iBX';
+      await driveService.permissions.create({
+        fileId: fileId,
+        requestBody: {
+          role: 'delete',
+          type: 'anyone'
+        },
+        
+      });
+      const result = await driveService.files.delete({
+        fileId: fileId,
+        //fields: 'webViewLink, webContentLink'
+      });
+      console.log(result.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }  
+//deletefile(auth)
 
  async function DlImgFromFolder(auth, folderId) {
     const drive = google.drive({ version: "v3", auth });
@@ -121,3 +144,24 @@ async function generatePublicUrl(auth) {
     );
   }
   //DlImgFromFolder(auth,'1iQ0NAYlyx2TVOKEkF7aFMH1CoQ7CO_Jg')
+
+  function listFiles() {
+    gapi.client.drive.files.list({
+      'pageSize': 10,
+      'fields': "nextPageToken, files(id, name)",
+      'q': "1jdPwn-tuer9AK-k3B3GP38kjC7dzGzXd"
+    }).then(function(response) {
+      appendPre('Files:');
+      var files = response.result.files;
+      if (files && files.length > 0) {
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          appendPre(file.name + ' (' + file.id + ')');
+        }
+      } else {
+        appendPre('No files found.');
+      }
+    });
+  }
+
+//listFiles()
