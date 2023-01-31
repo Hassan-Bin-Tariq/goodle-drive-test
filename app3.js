@@ -26,14 +26,16 @@ filepath which needs to be uploaded
 Note: Assumes example.jpg file is in root directory, 
 though this can be any filePath
 */
-const filePath = path.join(__dirname, 'hassan.jpg');
+const filePath = path.join(__dirname, 'cat.jpg');
 
 async function uploadFile() {
   try {
     const response = await drive.files.create({
+        
       requestBody: {
         name: 'example.jpg', //This can be name of your choice
         mimeType: 'image/jpg',
+        'parents':  ['10elnl3PbYG1OkJ3VpXWg8kg1hcesoe_v']
       },
       media: {
         mimeType: 'image/jpg',
@@ -47,12 +49,13 @@ async function uploadFile() {
   }
 }
 
-uploadFile();
+//uploadFile();
 
 async function deleteFile() {
   try {
     const response = await drive.files.delete({
-      fileId: 'YOUR FILE ID',
+        'parents':  ['10elnl3PbYG1OkJ3VpXWg8kg1hcesoe_v'],
+        fileId: '1KAwxachYPf3qwV8l9MDDyb4RWzN9oCsX',
     });
     console.log(response.data, response.status);
   } catch (error) {
@@ -60,7 +63,7 @@ async function deleteFile() {
   }
 }
 
-// deleteFile();
+deleteFile();
 
 async function generatePublicUrl() {
   try {
