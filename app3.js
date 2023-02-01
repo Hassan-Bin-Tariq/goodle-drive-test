@@ -45,7 +45,7 @@ async function folder() {
   }
 
 }
-folder()
+//folder()
 
 async function uploadFile() {
   try {
@@ -108,5 +108,21 @@ async function generatePublicUrl() {
     console.log(error.message);
   }
 }
-
 // generatePublicUrl();
+
+
+async function listFiles() {
+  try {
+    const fileId = '188FbNu8fX8L5qDbgi_2zCO5ecSAum7KH';
+
+    const result = await drive.files.list({
+      q: "mimeType='application/vnd.google-apps.folder' and '17McWc-DAfayH0BYiM7jmGbdLd-PXQNyH' in parents"
+        //parent: fileId 
+      //fields: 'webViewLink, webContentLink'
+    });
+    console.log(result.data);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+listFiles()
