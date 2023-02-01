@@ -28,6 +28,25 @@ though this can be any filePath
 */
 const filePath = path.join(__dirname, 'cat.jpg');
 
+async function folder() {
+  try {
+    const response = await drive.files.create({
+        
+      requestBody: {
+        'name': "UserEmail",
+        mimeType: 'application/vnd.google-apps.folder',
+        'parents':  ['10elnl3PbYG1OkJ3VpXWg8kg1hcesoe_v']
+      },
+    });
+
+    console.log(response.data);
+  } catch (error) {
+    console.log(error.message);
+  }
+
+}
+folder()
+
 async function uploadFile() {
   try {
     const response = await drive.files.create({
@@ -63,7 +82,7 @@ async function deleteFile() {
   }
 }
 
-deleteFile();
+//deleteFile();
 
 async function generatePublicUrl() {
   try {
