@@ -50,7 +50,7 @@ async function createAndUploadFile(auth){
 async function generatePublicUrl(auth) {
     const driveService = google.drive({version: 'v3', auth});
     try {
-      const fileId = '15jMGzpWRGkYtV1mitmM6AcUhuB-xWS0J';
+      const fileId = '1jdPwn-tuer9AK-k3B3GP38kjC7dzGzXd';
       await driveService.permissions.create({
         fileId: fileId,
         requestBody: {
@@ -59,10 +59,9 @@ async function generatePublicUrl(auth) {
         },
         
       });
-      const result = await driveService.files.list({
+      const result = await driveService.files.get({
         fileId: fileId,
-          trashed: false,
-        //fields: 'webViewLink, webContentLink'
+        fields: 'webViewLink, webContentLink'
       });
       console.log(result.data);
     } catch (error) {

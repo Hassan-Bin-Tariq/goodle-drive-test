@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const path = require('path');
 const fs = require('fs');
+const { CallTracker } = require('assert');
 
 const CLIENT_ID = '415909867180-3qsq9763f4fn19p6apd3jjpopfcgm8jl.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
@@ -110,8 +111,12 @@ async function generatePublicUrl() {
 }
 // generatePublicUrl();
 
-
-async function listFiles() {
+rollNumbers = []
+folderIDS = []
+imageIDS = []
+imageURLS = []
+var dict = {};
+async function listFolders() {
   try {
     const fileId = '188FbNu8fX8L5qDbgi_2zCO5ecSAum7KH';
 
@@ -120,9 +125,59 @@ async function listFiles() {
         //parent: fileId 
       //fields: 'webViewLink, webContentLink'
     });
-    console.log(result.data);
+    for (let i = 0; i < result.data.files.length; i++) {
+      rollNumbers.push(result.data.files[i].name)
+      folderIDS.push(result.data.files[i].id)
+    }
+    console.log(rollNumbers);
+    console.log(folderIDS);
   } catch (error) {
     console.log(error.message);
   }
 }
-listFiles()
+
+async function getpicsInsideFolders() {
+  try {
+    for (let i = 0; i < folderIDS.length; i++) {    
+      //console.log(folderIDS[i])
+      const result = await drive.files.list({
+        q:"mimeType='image/jpeg'and '"+folderIDS[i]+"' in parents"
+      });
+      imageIDS.push(result.data.files[0].id) //SIRF PEHLI PEHLI FILES UTHANI HA MATCH KRNEY K LIA JO SIGN UP K TIME DI USER NE
+    }
+    console.log(imageIDS)
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+async function generateUrls() {
+  try {
+    for (let i = 0; i < imageIDS.length; i++) {
+      const result = await drive.files.get({
+        fileId: imageIDS[i],
+        fields: 'webViewLink, webContentLink'
+      });
+      imageURLS.push(result.data.webViewLink)
+    }
+    console.log(imageURLS);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+function generateDictonary(){
+  for (let i = 0; i < imageURLS.length; i++) {
+    dict[rollNumbers[i]] = imageURLS[i];
+  }
+  console.log(dict)
+}
+
+async function function_caller(){
+  await listFolders()
+  await getpicsInsideFolders()
+  await generateUrls()
+  generateDictonary()
+}
+
+function_caller()
